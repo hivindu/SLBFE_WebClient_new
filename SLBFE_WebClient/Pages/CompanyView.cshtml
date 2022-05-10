@@ -1,0 +1,180 @@
+﻿@page
+@model SLBFE_WebClient.Pages.CompanyViewModel
+@{
+    Layout = null;
+}
+
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login | SLBFE_WebClient</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/SLBFE_WebClient.styles.css" asp-append-version="true" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+</head>
+<body class="d-flex flex-column min-vh-90">
+    <header>
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+            <div class="container">
+                <a class="navbar-brand" asp-area="" asp-page="/Index">SLBFE_WebClient</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                    <ul class="navbar-nav flex-grow-1">
+                         <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-page="/CompanyView">Job Seekers</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-page="/ManageVacancies">Vacancies</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <main role="main" class="pb-3">
+           <div class="container">
+        <div class="breadcrumb-header justify-content-between">
+    <div class="row">
+        <div class="col-md-6">
+            <h4 class="content-title mb-0 my-auto">Job Seekers</h4>
+        </div>
+
+        <div class="col-md-6 ">
+
+        <div class="pull-right">
+            <button type="button" class="btn btn-primary " id="btnSearchToggle"><em class="fa fa-filter mr-2"></em>Filter</button>
+        </div>
+
+        </div>
+    </div>
+    
+</div>
+<div id="CitizensAdvanceSearch" style="display: none;">
+    <div class="card card-body">
+        <form id="advanceFilterForm">
+            <div class="col-md-12 displayFlex no_paddingLeft no_paddingRight no_paddingBottom">
+                <div class="row">
+                    <div class="form-group col-md-2">
+                        <label>Employment Status</label>
+                        <select class="form-control select2-no-search" id="txtEmployment">
+                            <option value="true">Employed</option>
+                            <option value="false">Un-Employed</option>
+                        </select>
+                    </div>
+                    <div class="form-group col-md-2">
+                        <label>Qualification</label>
+                        <input class="form-control" type="text" id="txtQualification" />
+                    </div>
+                    <div class="btn-group col-md-2 right-content" style="padding-top:22px;margin-top:7px; padding-bottom:30px;" role="group">
+                        <button type="button" style="padding-bottom:8px" id="filterbtn" class="btn btn-primary " onclick="advanceFilter()">Search</button>
+                        <button type="button" style="padding-bottom:8px" class="btn btn-primary ml-2" onclick="resetFilter()">Reset</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="text-center" style="margin-top:10px;">
+    <div class="row">
+        <div class="col-md-12">
+            <table id="citizensDetails" class="table table-striped table-bordered dt-responsive nowrap" width="100%" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Proffession</th>
+                        <th>Employed</th>
+                        <th style="width:200px"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+<div id="citizensDetailModel" class="modal right fadeModal fade modal-center" role="dialog">
+    <div class="modal-dialog" style="width:882px">
+        <div class="modal-content">
+            <div class="modal-header ">
+                <h5 class="modal-title ">Verify - Citizens Details</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form class="form-horizontal" id="insertForm">
+
+                <div class="modal-body pt-4" style="padding-left: 35px;">
+
+                    <div class="form-group row col-md-12">
+
+                        <div class="form-group col-md-6">
+                            <span style="font-weight:bold">Name</span>
+                            <label id="txtName"></label>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <span style="font-weight:bold">NIC</span>
+                            <label id="txtNic"></label>
+                        </div>
+                       
+                    </div>
+
+                    <div class="form-group row col-md-12">
+                        <div class="form-group col-md-6">
+                            <span style="font-weight:bold">Address</span>
+                            <label id="txtAddress"></label>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <span style="font-weight:bold">Email</span>
+                            <label id="txtEmail"></label>
+                        </div>
+              </div>
+              <div class="form-group row col-md-12">
+                  <div class="form-group col-md-4">
+                            <span style="font-weight:bold">Employment Status</span>
+                            <label id="textEmploymentStatud"></label>
+                        </div>
+              </div>
+              
+                    <div class="form-group row col-md-12">
+                        <div class="form-group col-md-12">
+                           <table id="qualificationDetaisl" class="table">
+                               <thead>
+                                   <th>Document Name</th>
+                                   <th>Options</th>
+                               </thead>
+                               <tbody>
+
+                               </tbody>
+                           </table>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+    </div>
+        </main>
+    <footer class="border-top footer text-muted mt-auto">
+        <div class="container">
+            &copy; 2022 - SLBFE_WebClient
+        </div>
+    </footer>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="~/js/BasicScript/CompanyView.js" language="javascript" type="text/javascript"></script>
+</body>
+</html>

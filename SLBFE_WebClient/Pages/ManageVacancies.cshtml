@@ -1,0 +1,268 @@
+﻿@page
+@model SLBFE_WebClient.Pages.ManageVacanciesModel
+@{
+    Layout = null;
+}
+
+
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login | SLBFE_WebClient</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/SLBFE_WebClient.styles.css" asp-append-version="true" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+</head>
+<body class="d-flex flex-column min-vh-90">
+    <header>
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+            <div class="container">
+                <a class="navbar-brand" asp-area="" asp-page="/Index">SLBFE_WebClient</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                    <ul class="navbar-nav flex-grow-1">
+                         <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-page="/CompanyView">Job Seekers</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-page="/ManageVacancies">Vacancies</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <main role="main" class="pb-3">
+           <div class="container">
+        <div class="breadcrumb-header justify-content-between">
+    <div class="row">
+        <div class="col-md-6">
+            <h4 class="content-title mb-0 my-auto">Vacancy Management</h4>
+        </div>
+
+        <div class="col-md-6 ">
+
+        <div class="pull-right">
+            <button type="button" class="btn btn-success " id="btnAdd" onclick="showModal()"><em class="fa fa-plus"></em>Add</button>
+        </div>
+
+        </div>
+    </div>
+    
+</div>
+
+<div class="text-center" style="margin-top: 10px;">
+    <div class="row">
+        <div class="col-md-12">
+            <table id="vacancyDetails" class="table table-striped table-bordered dt-responsive nowrap" width="100%" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>JobTitle</th>
+                        <th>JobDescription</th>
+                        <th>IsApproved</th>
+                        <th style="width:200px"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div id="vacancyAddModal" class="modal right fadeModal fade modal-center" role="dialog">
+        <div class="modal-dialog" style="width:882px">
+        <div class="modal-content">
+            <div class="modal-header ">
+                <h5 class="modal-title ">Create new Vacancy</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form class="form-horizontal" id="insertForm">
+
+                <div class="modal-body pt-6" style="padding-left: 35px;">
+
+                    <div class="form-group row col-md-12">
+
+                        <div class="form-group col-md-6">
+                            <span style="font-weight:bold">Job Title</span>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <input type="text" id="insJobTitle" class="form-control"/>
+                        </div>
+                    
+                    </div>
+
+                    <div class="form-group row col-md-12">
+                        <div class="form-group col-md-6">
+                            <span style="font-weight:bold">Job Description</span>
+                        </div>
+                         <div class="form-group col-md-6">
+                            <input type="text" id="insJobDescription" class="form-control"/>
+                        </div>
+                        
+                    </div>
+                    <div class="form-group row col-md-12">
+                        <div class="form-group col-md-6">
+                            <span style="font-weight:bold">Deadline</span>
+                        </div>
+                         <div class="form-group col-md-6">
+                            <input type="text" id="insDeadline" class="form-control"/>
+                        </div>
+                        
+                    </div>
+                    <div class="modal-footer">
+                <div class="form-group mb-0 mt-0 justify-content-end text-right displayFlex">
+                    <div class="col-md-12">
+                        <button type="submit" id="verifyButton" class="btn btn-block btn-success wd-100-f" onclick="AddNewVacancy()">Add</button>
+                    </div>
+                </div>
+            </div>
+                </div>
+            </form>
+        </div>
+        </div>
+    </div>
+
+    <div id="vacancyEditModal" class="modal right fadeModal fade modal-center" role="dialog">
+        <div class="modal-dialog" style="width:882px">
+        <div class="modal-content">
+            <div class="modal-header ">
+                <h5 class="modal-title ">Edit Vacancy</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form class="form-horizontal" id="insertForm">
+
+                <div class="modal-body pt-6" style="padding-left: 35px;">
+
+                    <div class="form-group row col-md-12">
+
+                        <div class="form-group col-md-6">
+                            <span style="font-weight:bold">Job Title</span>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <input type="text" class="form-control" id="updJobTitle" required/>
+                            <label id="txtId" style="display:none;"></label>
+                            <label id="txtApproval" style="display:none;"></label>
+                        </div>
+                    
+                    </div>
+
+                    <div class="form-group row col-md-12">
+                        <div class="form-group col-md-6">
+                            <span style="font-weight:bold">Job Description</span>
+                        </div>
+                         <div class="form-group col-md-6">
+                            <input type="text" class="form-control" id="updJobDescription" required/>
+                        </div>
+                        
+                    </div>
+                    <div class="form-group row col-md-12">
+                        <div class="form-group col-md-6">
+                            <span style="font-weight:bold">Deadline</span>
+                        </div>
+                         <div class="form-group col-md-6">
+                            <input type="text" class="form-control" id="updDeadline" />
+                        </div>
+                        
+                    </div>
+                    <div class="modal-footer">
+                <div class="form-group mb-0 mt-0 justify-content-end text-right displayFlex">
+                    <div class="col-md-12">
+                        <button type="submit" id="verifyButton" class="btn btn-block btn-success wd-100-f" onclick="EditVacancy()">Edit</button>
+                    </div>
+                </div>
+            </div>
+                </div>
+            </form>
+        </div>
+        </div>
+    </div>
+
+    <div id="vacancyDeleteModal" class="modal right fadeModal fade modal-center" role="dialog">
+        <div class="modal-dialog" style="width:882px">
+        <div class="modal-content">
+            <div class="modal-header ">
+                <h5 class="modal-title ">Are you sure want to Delete?</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form class="form-horizontal" id="insertForm">
+
+                <div class="modal-body pt-6" style="padding-left: 35px;">
+
+                    <div class="form-group row col-md-12">
+                        <div class="form-group col-md-6">
+                            <label id="txtDelId" style="display:none;"></label>
+                        </div>
+                    
+                    </div>
+                    <div class="modal-footer">
+                <div class="form-group mb-0 mt-0 justify-content-end text-right displayFlex">
+                    <div class="col-md-12">
+                        <button type="submit" id="verifyButton" class="btn btn-block btn-secondary wd-100-f pull-left" onclick="modelClose()">Cancel</button>
+                        <button type="submit" id="verifyButton" class="btn btn-block btn-success wd-100-f pull-right" onclick="RemoveVacancy()">Delete</button>
+                    </div>
+                </div>
+            </div>
+                </div>
+            </form>
+        </div>
+        </div>
+    </div>
+
+    <div id="applicantDetailsModal" class="modal right fadeModal fade modal-center" role="dialog">
+        <div class="modal-dialog" style="width:882px">
+        <div class="modal-content">
+            <div class="modal-header ">
+                <h5 class="modal-title ">Applicant details</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form class="form-horizontal" id="insertForm">
+                <div class="modal-body pt-6" style="padding-left: 35px;">
+                    <div class="form-group row col-md-12">
+                        <table class="table" id="applicantDetails">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Email</th>
+                                    <th>Certificates</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </form>
+        </div>
+        </div>
+    </div>
+
+    </div>
+        </main>
+    <footer class="border-top footer text-muted mt-auto">
+        <div class="container">
+            &copy; 2022 - SLBFE_WebClient
+        </div>
+    </footer>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="~/js/BasicScript/ManageVacancies.js" language="javascript" type="text/javascript"></script>
+</body>
+</html>
