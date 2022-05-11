@@ -97,7 +97,13 @@ function showData(citizenDataSet) {
     $('#txtNic').text(citizensInfo.nic);
     $('#txtAddress').text(citizensInfo.address);
     $('#txtEmail').text(citizensInfo.email);
-    $('#txtValidated').text(citizensInfo.va);
+    
+
+    if (citizensInfo.employed) {
+        $('#textEmploymentStatud').text('Employed');
+    } else {
+        $('#textEmploymentStatud').text('Unemployed');
+    }
 
     if (!citizensInfo.verified) {
         $('#verifyButton').prop('disabled', true);
